@@ -1,0 +1,33 @@
+{
+  "name": "es6-gulp-sandbox",
+  "version": "1.0.0",
+  "description": "ES6 training repository - transpiles ES6 with babel and runs jasmine with karma",
+  "main": "karma.conf.js",
+  "scripts": {
+    "test": "gulp && karma start karma.conf.js --single-run --browsers=PhantomJS",
+    "api": "hs src/data"
+  },
+  "author": "Tomasz Ducin <tomasz@ducin.it>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-clean": "^0.3.2",
+    "gulp-sourcemaps": "^2.2.0",
+    "gulp-util": "^3.0.7",
+    "jasmine-core": "^2.5.2",
+    "karma": "^0.13.20",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-es6-shim": "^1.0.0",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.26",
+    "phantomjs-prebuilt": "^2.1.3",
+    "run-sequence": "^1.2.2"
+  }
+}
