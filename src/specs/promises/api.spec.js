@@ -1,40 +1,42 @@
 describe('REST API promises', () => {
 
   it('handles getNationalities call', (done) => {
-    // imagine, that API.getNationalities executes AJAX call to a REST API
-    // that is asynchronously resolved with list of nationalities
-    //
-    // use API.getNationalities function to fetch data and make the `expect` call pass
-
-    expect(nationalities).toEqual(["US", "UK", "DE", "FR"])
+    API.getNationalities().then(nationalities => {
+      expect(nationalities).toEqual(["US", "UK", "DE", "FR"])
+      done()
+    })
   })
 
   it('handles getUser call', (done) => {
-    // imagine, that API.getUser executes AJAX call to a REST API
-    // that is asynchronously resolved with data of the user, given by id
-    //
-    // use API.getUser function to fetch appropriate user and make the `expect` call pass
-
-    expect(user.name).toBe("Tiara Will")
+    API.getUser(7344).then(user => {
+      expect(user.name).toBe("Tiara Will")
+      done()
+    })
   })
 
   it('handles getUsersByNationality call', (done) => {
-    // imagine, that API.getUsersByNationality executes AJAX call to a REST API
-    // that is asynchronously resolved with list of all users of a given nationality
-    //
-    // use API.getUsersByNationality function to fetch appropriate users and make the `expect` call pass
-
-    expect(usersUK.length).toBe(30)
-    expect(usersUS.length).toBe(25)
-    expect(usersFR.length).toBe(24)
-    expect(usersDE.length).toBe(39)
+    Promise.all([
+      API.getUsersByNationality("UK").then(usersUK => {
+        expect(usersUK.length).toBe(30)
+      }),
+      API.getUsersByNationality("US").then(usersUS => {
+        expect(usersUS.length).toBe(25)
+      }),
+      API.getUsersByNationality("FR").then(usersFR => {
+        expect(usersFR.length).toBe(24)
+      }),
+      API.getUsersByNationality("DE").then(usersDE => {
+        expect(usersDE.length).toBe(39)
+      })
+    ]).then(done)
   })
 
   it('should perform a simple business domain scenario', (done) => {
-    // write a function which will calculate and return total salaries of users filtered by nationality
-
     function getTotalNationalSalary(nationality){
-      // function body
+      return API.getUsersByNationality(nationality)
+        .then(users => {
+          return users.reduce((acc, user) => acc += user.salary, 0)
+        })
     }
 
     Promise.all([
@@ -53,13 +55,28 @@ describe('REST API promises', () => {
   })
 
   it('should perform a complex business domain scenario', (done) => {
-    // similarly to the previous exercise write a function which will
-    // calculate and return total salaries of users of all nationalities
-    // available in the system
-    // the response should be a map: { UK: amount, US: amount, ...}
-
     function getTotalSalariesByNationality(){
-      // function body
+      // this is a non-trivial example - need to break the chain
+
+      // promise holds nationalities list (ordered)
+      let nationalitiesPromise = API.getNationalities();
+
+      // promise holds per-nationality salaries list (ordered)
+      let usersByNationPromise = nationalitiesPromise.then(nationalities => {
+        return nationalities.map(nationality => API.getUsersByNationality(nationality))
+      }).then(promises => {
+        return Promise.all(promises);
+      })
+
+      // join the together again
+      return Promise.all([nationalitiesPromise, usersByNationPromise]).then(([nationalities, usersByNation]) => {
+        let result = {}
+        nationalities.forEach((nation, idx) => {
+          result[nation] = usersByNation[idx]
+            .reduce((acc, user) => acc += user.salary, 0)
+        })
+        return result;
+      })
     }
 
     getTotalSalariesByNationality()

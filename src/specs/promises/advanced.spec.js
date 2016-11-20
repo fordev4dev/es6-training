@@ -1,10 +1,9 @@
 describe('promises', () => {
 
   it('can be chained', (done) => {
-    // specify thenable functions to make expectations pass
-    let p1 = Promise.resolve(/* YOUR ANSWER */)
-    let p2 = p1.then(/* YOUR ANSWER */)
-    let p3 = p2.then(/* YOUR ANSWER */)
+    let p1 = Promise.resolve(3)
+    let p2 = p1.then(d => [d, d*d, d*d*d, d*d*d*d])
+    let p3 = p2.then(([a, b, c, d]) => [a+c, b+d])
 
     p1.then(result => expect(result).toEqual(3))
     p2.then(result => expect(result).toEqual([3, 9, 27, 81]))

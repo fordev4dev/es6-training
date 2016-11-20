@@ -1,15 +1,9 @@
 describe('promises', () => {
-  // this suite is a little different
-  // given an example promise boilerplate at the bottom
-  // adapt it to support 3 different scenarios:
-  // - resolved
-  // - rejected
-  // - error catch
 
   it('should resolve', (done) => {
-    pickUpAGirl(/*ENTER GUESS HERE*/)
+    pickUpAGirl('romantic')
       .then(result => {
-        expect(result).toBe(/*ENTER GUESS HERE*/)
+        expect(result).toBe('Amor Latino')
         done()
       }, error => {
         throw new Error('this should not run')
@@ -20,11 +14,11 @@ describe('promises', () => {
   })
 
   it('should reject', (done) => {
-    pickUpAGirl(/*ENTER GUESS HERE*/)
+    pickUpAGirl('rich asshole')
       .then(result => {
         throw new Error('this should not run')
       }, error => {
-        expect(error).toBe(/*ENTER GUESS HERE*/)
+        expect(error).toBe('Donald Trump')
         done()
       })
       .catch(error => {
@@ -38,7 +32,7 @@ describe('promises', () => {
         throw new Error('this should not run')
       })
       .catch(error => {
-        expect(error.message).toBe(/*ENTER GUESS HERE*/)
+        expect(error.message).toBe('what are you doing?')
         done()
       })
   })

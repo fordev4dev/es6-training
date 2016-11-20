@@ -3,12 +3,11 @@ describe('enhanced object literals', () => {
   it('can use shorthand for property names', () => {
 
     function createBeatle(name, dead) {
-      // Using NEW Object Literal Syntax, return a literal that will allow the tests to pass
       return {
         type: 'Musician',
-        name: name,
-        dead: dead,
-        wantsToPlayWith: function (target){
+        name,
+        dead,
+        wantsToPlayWith(target){
           return `${this.name} wants to play with ${target.name} ${target.dead ? 'but he is' : 'and he is not'} dead`;
         }
       }

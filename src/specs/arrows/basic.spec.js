@@ -1,21 +1,20 @@
 describe('arrow functions', () => {
 
     it('can replace simple traditional functions', () => {
-        // Write two functions that take two parameters and return their sum
-        // 'fnAdd' - as a regular function
-        // 'arrowAdd' - as an arrow function
+        let fnAdd = function(a, b){
+            return a + b;
+        };
+        let arrowAdd = (a, b) => a + b;
 
-        let fnAdd, arrowAdd;
-
-        expect(fnAdd.length).toBe(2);
-        expect(arrowAdd.length).toBe(2);
-        expect(fnAdd(3, 3)).toBe(arrowAdd(3, 3));
+        expect(fnAdd.length).toBe(2)
+        expect(arrowAdd.length).toBe(2)
+        expect(fnAdd(3, 3)).toBe(arrowAdd(3, 3))
     });
 
     describe('are great for defining simple calculations', () => {
-        // Write following lambda functions, performing subtraction, multiplication and division
-
-        let arrowSub, arrowMul, arrowDiv;
+        let arrowSub = (a, b) => a - b;
+        let arrowMul = (a, b) => a * b;
+        let arrowDiv = (a, b) => a / b;
 
         it('subtracts numbers correctly', () => {
             expect(arrowSub(20, -15)).toEqual(35)
@@ -34,15 +33,15 @@ describe('arrow functions', () => {
     })
 
     it('can replace complex traditional functions', () => {
-        // Write two functions that implement Fibonacci sequence
-        // 'fnFib' - as a regular function
-        // 'arrowFib' - as an arrow function, try NOT to use curly brackets {}
-        // Fibonacci sequence:
-        // 0, for x = 0
-        // 1, for x = 1
-        // fib(x-1) + fib(x-2), for x > 1
+        let fnFib = function(x){
+            if (x === 0 || x === 1) {
+                return x;
+            } else {
+                return fnFib(x-1) + fnFib(x-2);
+            }
+        };
 
-        let fnFib, arrowFib;
+        let arrowFib = x => (x === 0 || x === 1) ? x : arrowFib(x-1) + arrowFib(x-2);
 
         [fnFib, arrowFib].forEach(function(fn){
             expect(fn(0)).toBe(0);
@@ -59,12 +58,10 @@ describe('arrow functions', () => {
     // console.log is being spied not to pollute output for other tests
     spyOn(console, 'log');
 
-    // Change the person object.
-    // One of the functions should become an arrow to allow for 'this' to retain context correctly
     const person = {
       name: 'Jarosław',
       greetFriends: function(friends) {
-        friends.forEach(function(friend) {
+        friends.forEach((friend) => {
           console.log(this.name + ' greets to ' + friend)
         })
       },
